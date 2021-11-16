@@ -2,6 +2,8 @@ package com.`fun`.gallerydroid.di
 
 import com.`fun`.gallerydroid.common.Constants
 import com.`fun`.gallerydroid.data.remote.UserAlbumsApi
+import com.`fun`.gallerydroid.data.repository.UserRepositoryImpl
+import com.`fun`.gallerydroid.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,5 +24,11 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(UserAlbumsApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(api: UserAlbumsApi): UserRepository {
+        return UserRepositoryImpl(api)
     }
 }
