@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.`fun`.gallerydroid.common.Constants
 import com.`fun`.gallerydroid.data.remote.dto.AlbumDto
+import com.`fun`.gallerydroid.data.remote.dto.PhotoDto
 import com.`fun`.gallerydroid.databinding.FragmentItemListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,16 +20,16 @@ class UserAlbumFragment : Fragment() {
 
     private val albumViewModel by viewModels<UserAlbumViewModel>()
     private lateinit var binding: FragmentItemListBinding
-    private lateinit var postListAdapter: UserAlbumAdapter
+    private lateinit var userAlbumAdapter: UserAlbumAdapter
     private var userId: Int? = null
+    private var albumList: MutableList<AlbumDto> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getInt("id")?.let { userId ->
-            albumViewModel.getPosts(userId)
+            albumViewModel.getAlbums(userId)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,16 +59,24 @@ class UserAlbumFragment : Fragment() {
         binding.rvItem.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            postListAdapter = UserAlbumAdapter { id ->
-                onAlbumClicked(id)
+            userAlbumAdapter = UserAlbumAdapter { id, position ->
+                Log.e(Constants.TAG, "album id $id & position $position")
+                onAlbumClicked(id, position)
             }
-            adapter = postListAdapter
-            postListAdapter.submitList(users)
+            adapter = userAlbumAdapter
+            albumList = users.toMutableList()
+            userAlbumAdapter.submitList(users)
             hideLoader()
         }
     }
 
-    private fun onAlbumClicked(albumId: Int) {
+    private fun showAlbumPhotos(photos: Pair<List<PhotoDto>, Int>) {
+        albumList[photos.second].photos = photos.first.map { it.url }
+        userAlbumAdapter.submitList(albumList)
+    }
+
+    private fun onAlbumClicked(albumId: Int, position: Int) {
+        albumViewModel.getAlbumPhotos(albumId, position)
     }
 
     private fun showError(exception: String) {
@@ -77,9 +86,19 @@ class UserAlbumFragment : Fragment() {
     private fun initObserver() {
         albumViewModel.uiState.observe(viewLifecycleOwner, { uiState ->
             when (uiState) {
-                is UserAlbumViewModel.UserPostsUiState.Error -> showError(uiState.exception)
-                UserAlbumViewModel.UserPostsUiState.Loading -> showLoader()
-                is UserAlbumViewModel.UserPostsUiState.Success -> showUserPosts(uiState.posts)
+                is UserAlbumViewModel.UserAlbumsUiState.Error -> showError(uiState.exception)
+                UserAlbumViewModel.UserAlbumsUiState.Loading -> showLoader()
+                is UserAlbumViewModel.UserAlbumsUiState.Success -> showUserPosts(uiState.posts)
+            }
+        })
+
+        albumViewModel.uiPhotosState.observe(viewLifecycleOwner, { uiState ->
+            when (uiState) {
+                is UserAlbumViewModel.UserPhotosUiState.Error -> {
+                }
+                UserAlbumViewModel.UserPhotosUiState.Loading -> {
+                }
+                is UserAlbumViewModel.UserPhotosUiState.Success -> showAlbumPhotos(uiState.photos)
             }
         })
     }

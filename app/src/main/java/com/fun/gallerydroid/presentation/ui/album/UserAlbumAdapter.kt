@@ -3,18 +3,22 @@ package com.`fun`.gallerydroid.presentation.ui.album
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.`fun`.gallerydroid.data.remote.dto.AlbumDto
 import com.`fun`.gallerydroid.databinding.ItemAlbumListBinding
 
-class UserAlbumAdapter(private val onUserClicked: (Int)-> Unit) :
+class UserAlbumAdapter(private val onAlbumClicked: (Int,Int) -> Unit) :
     ListAdapter<AlbumDto, UserAlbumAdapter.PostListViewHolder>(PostComparator) {
+
+    private lateinit var albumPhotoAdapter: AlbumPhotoAdapter
+
     override fun onBindViewHolder(holder: PostListViewHolder, position: Int) {
         val album = getItem(position)
         album?.let { holder.bind(it) }
         holder.itemView.setOnClickListener {
-            onUserClicked.invoke(album.id)
+            onAlbumClicked.invoke(album.id,position)
         }
     }
 
@@ -31,9 +35,18 @@ class UserAlbumAdapter(private val onUserClicked: (Int)-> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(album: AlbumDto) {
             binding.album = album
-        }
 
+            album.photos?.let { photos ->
+                binding.rvAlbumPhoto.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = albumPhotoAdapter
+                    albumPhotoAdapter.submitList(photos)
+                }
+            }
+        }
     }
+
 
     companion object {
         private val PostComparator = object : DiffUtil.ItemCallback<AlbumDto>() {

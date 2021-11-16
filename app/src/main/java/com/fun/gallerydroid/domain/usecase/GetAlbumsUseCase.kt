@@ -15,7 +15,7 @@ import javax.inject.Inject
 class GetAlbumsUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    fun getAlbumPhotos(id: Int): Flow<Resource<List<AlbumDto>>> = flow {
+    fun getAlbums(id: Int): Flow<Resource<List<AlbumDto>>> = flow {
         try {
             emit(Resource.Loading<List<AlbumDto>>())
             val albums = repository.getUserAlbums(id)

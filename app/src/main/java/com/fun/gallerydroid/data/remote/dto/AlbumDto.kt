@@ -5,5 +5,6 @@ class AlbumData : ArrayList<AlbumDto>()
 data class AlbumDto(
     val id: Int,
     val title: String,
-    val userId: Int
+    val userId: Int,
+    var photos: List<String>? = null
 )
