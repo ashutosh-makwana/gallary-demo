@@ -73,6 +73,7 @@ class UserAlbumFragment : Fragment() {
     private fun showAlbumPhotos(photos: Pair<List<PhotoDto>, Int>) {
         albumList[photos.second].photos = photos.first.map { it.url }
         userAlbumAdapter.submitList(albumList)
+        userAlbumAdapter.notifyDataSetChanged()
     }
 
     private fun onAlbumClicked(albumId: Int, position: Int) {

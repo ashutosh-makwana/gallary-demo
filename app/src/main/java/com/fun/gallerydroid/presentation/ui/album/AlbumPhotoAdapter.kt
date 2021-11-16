@@ -1,10 +1,12 @@
 package com.`fun`.gallerydroid.presentation.ui.album
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.`fun`.gallerydroid.common.Constants
 import com.`fun`.gallerydroid.common.load
 import com.`fun`.gallerydroid.databinding.ItemPhotoListBinding
 
@@ -27,6 +29,7 @@ class AlbumPhotoAdapter :
     inner class PostListViewHolder(private val binding: ItemPhotoListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(photoUrl: String) {
+            Log.e(Constants.TAG, "before loading $photoUrl")
             binding.ivAlbumPhoto.load(photoUrl)
         }
     }

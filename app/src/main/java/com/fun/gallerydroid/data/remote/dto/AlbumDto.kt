@@ -6,5 +6,5 @@ data class AlbumDto(
     val id: Int,
     val title: String,
     val userId: Int,
-    var photos: List<String>? = null
+    var photos: List<String> = listOf()
 )
