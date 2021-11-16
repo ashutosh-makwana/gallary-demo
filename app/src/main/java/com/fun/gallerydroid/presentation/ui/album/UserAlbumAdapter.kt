@@ -11,10 +11,10 @@ import com.`fun`.gallerydroid.databinding.ItemAlbumListBinding
 class UserAlbumAdapter(private val onUserClicked: (Int)-> Unit) :
     ListAdapter<AlbumDto, UserAlbumAdapter.PostListViewHolder>(PostComparator) {
     override fun onBindViewHolder(holder: PostListViewHolder, position: Int) {
-        val user = getItem(position)
-        user?.let { holder.bind(it) }
+        val album = getItem(position)
+        album?.let { holder.bind(it) }
         holder.itemView.setOnClickListener {
-            onUserClicked.invoke(user.id)
+            onUserClicked.invoke(album.id)
         }
     }
 

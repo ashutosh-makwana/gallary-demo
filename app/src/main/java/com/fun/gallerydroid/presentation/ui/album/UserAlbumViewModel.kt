@@ -31,7 +31,7 @@ class UserAlbumViewModel @Inject constructor(
         data class Error(val exception: String) : UserPostsUiState()
     }
 
-    private fun getPosts(id:Int) {
+    fun getPosts(id:Int) {
         getAlbumsUseCase.getAlbumPhotos(id).onEach { result ->
             when (result) {
                 is Resource.Success -> {
