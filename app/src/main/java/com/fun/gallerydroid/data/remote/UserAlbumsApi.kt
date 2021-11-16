@@ -16,5 +16,5 @@ interface UserAlbumsApi {
     suspend fun getAlbumsByUser(@Query("userId") userId: Int): AlbumData
 
     @GET("/photos")
-    suspend fun getPhotosByAlbum(@Path("coinId") coinId: Int): PhotoData
+    suspend fun getPhotosByAlbum(@Query("albumId") albumId: Int): PhotoData
 }
