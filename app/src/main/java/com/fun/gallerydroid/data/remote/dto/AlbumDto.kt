@@ -1,8 +1,8 @@
 package com.`fun`.gallerydroid.data.remote.dto
 
-class AlbumData : ArrayList<AlbumDtoItem>()
+class AlbumData : ArrayList<AlbumDto>()
 
-data class AlbumDtoItem(
+data class AlbumDto(
     val id: Int,
     val title: String,
     val userId: Int
