@@ -20,38 +20,38 @@ class UserListViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
-    private val _uiState: MutableStateFlow<UserPostsUiState> =
-        MutableStateFlow(UserPostsUiState.Loading)
+    private val _uiState: MutableStateFlow<UserListUiState> =
+        MutableStateFlow(UserListUiState.Loading)
 
     // The UI collects from this StateFlow to get its state updates
-    val uiState: StateFlow<UserPostsUiState> = _uiState
+    val uiState: StateFlow<UserListUiState> = _uiState
 
-    // Represents different states for the user posts list screen
-    sealed class UserPostsUiState {
-        object Loading : UserPostsUiState()
-        data class Success(val posts: List<User>) : UserPostsUiState()
-        data class Error(val exception: String) : UserPostsUiState()
+    // Represents different states for the user list screen
+    sealed class UserListUiState {
+        object Loading : UserListUiState()
+        data class Success(val users: List<User>) : UserListUiState()
+        data class Error(val exception: String) : UserListUiState()
     }
 
     init {
-        getPosts()
+        getUsers()
     }
 
-    private fun getPosts() {
+    private fun getUsers() {
         getUsersUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     result.data?.let {
                         Log.e(Constants.TAG,"data view model ${it}")
-                        _uiState.value = UserPostsUiState.Success(it)
+                        _uiState.value = UserListUiState.Success(it)
                     }
                 }
                 is Resource.Error -> {
                     _uiState.value =
-                        UserPostsUiState.Error(result.message ?: "An unexpected error occurred")
+                        UserListUiState.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
-                    _uiState.value = UserPostsUiState.Loading
+                    _uiState.value = UserListUiState.Loading
                 }
             }
         }.launchIn(viewModelScope)

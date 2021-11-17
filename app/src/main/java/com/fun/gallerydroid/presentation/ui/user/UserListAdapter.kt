@@ -13,9 +13,6 @@ class UserListAdapter(private val onUserClicked: (Int) -> Unit) :
     override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
         val user = getItem(position)
         user?.let { holder.bind(it) }
-        holder.itemView.setOnClickListener {
-            onUserClicked.invoke(user.id)
-        }
     }
 
     override fun onCreateViewHolder(
@@ -31,6 +28,9 @@ class UserListAdapter(private val onUserClicked: (Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.user = user
+            binding.cardUser.setOnClickListener {
+                onUserClicked.invoke(user.id)
+            }
         }
     }
 

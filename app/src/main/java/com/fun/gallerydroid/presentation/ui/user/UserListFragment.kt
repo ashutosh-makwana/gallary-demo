@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.`fun`.gallerydroid.R
 import com.`fun`.gallerydroid.databinding.FragmentItemListBinding
 import com.`fun`.gallerydroid.domain.model.User
-import com.`fun`.gallerydroid.presentation.ui.user.UserListViewModel.UserPostsUiState.*
+import com.`fun`.gallerydroid.presentation.ui.user.UserListViewModel.UserListUiState.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -52,7 +52,7 @@ class UserListFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showUserPosts(users: List<User>) {
+    private fun showUsers(users: List<User>) {
         binding.rvItem.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
@@ -83,7 +83,7 @@ class UserListFragment : Fragment() {
                     when(uiState){
                         is Error -> showError(uiState.exception)
                         Loading -> showLoader()
-                        is Success -> showUserPosts(uiState.posts)
+                        is Success -> showUsers(uiState.users)
                     }
                 }
             }

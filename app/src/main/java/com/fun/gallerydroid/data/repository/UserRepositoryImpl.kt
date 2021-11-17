@@ -13,17 +13,17 @@ class UserRepositoryImpl @Inject constructor(
     private val api: UserAlbumsApi
 ) : UserRepository {
     override suspend fun getUser(): List<UserDto> {
-        Log.e(TAG, "${api.getUsers()}")
+        Log.e(TAG, "users api ${api.getUsers()}")
         return api.getUsers()
     }
 
     override suspend fun getUserAlbums(id: Int): List<AlbumDto> {
-        Log.e(TAG, "${api.getAlbumsByUser(id)}")
+        Log.e(TAG, "albums api ${api.getAlbumsByUser(id)}")
         return api.getAlbumsByUser(id)
     }
 
     override suspend fun getAlbumPhotos(id: Int): List<PhotoDto> {
-        Log.e(TAG, "${api.getPhotosByAlbum(id)}")
+        Log.e(TAG, "album photos pai ${api.getPhotosByAlbum(id)}")
         return api.getPhotosByAlbum(id)
     }
 }

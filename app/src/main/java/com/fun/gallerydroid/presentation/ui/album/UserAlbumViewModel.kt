@@ -27,10 +27,10 @@ class UserAlbumViewModel @Inject constructor(
     // The UI collects from this StateFlow to get its state updates
     val uiState: LiveData<UserAlbumsUiState> = _uiState
 
-    // Represents different states for the user posts list screen
+    // Represents different states for the user list screen
     sealed class UserAlbumsUiState {
         object Loading : UserAlbumsUiState()
-        data class Success(val posts: List<AlbumDto>) : UserAlbumsUiState()
+        data class Success(val albums: List<AlbumDto>) : UserAlbumsUiState()
         data class Error(val exception: String) : UserAlbumsUiState()
     }
 
@@ -41,7 +41,7 @@ class UserAlbumViewModel @Inject constructor(
     // The UI collects from this StateFlow to get its state updates
     val uiPhotosState: LiveData<UserPhotosUiState> = _uiPhotosState
 
-    // Represents different states for the user posts list screen
+    // Represents different states for the photo list screen
     sealed class UserPhotosUiState {
         object Loading : UserPhotosUiState()
         data class Success(val photos: Pair<List<PhotoDto>, Int>) : UserPhotosUiState()

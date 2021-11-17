@@ -55,7 +55,7 @@ class UserAlbumFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showUserPosts(users: List<AlbumDto>) {
+    private fun showUserAlbums(users: List<AlbumDto>) {
         binding.rvItem.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
@@ -73,7 +73,8 @@ class UserAlbumFragment : Fragment() {
     private fun showAlbumPhotos(photos: Pair<List<PhotoDto>, Int>) {
         albumList[photos.second].photos = photos.first.map { it.url }
         userAlbumAdapter.submitList(albumList)
-        userAlbumAdapter.notifyDataSetChanged()
+        userAlbumAdapter.notifyItemChanged(photos.second)
+        hideLoader()
     }
 
     private fun onAlbumClicked(albumId: Int, position: Int) {
@@ -89,16 +90,14 @@ class UserAlbumFragment : Fragment() {
             when (uiState) {
                 is UserAlbumViewModel.UserAlbumsUiState.Error -> showError(uiState.exception)
                 UserAlbumViewModel.UserAlbumsUiState.Loading -> showLoader()
-                is UserAlbumViewModel.UserAlbumsUiState.Success -> showUserPosts(uiState.posts)
+                is UserAlbumViewModel.UserAlbumsUiState.Success -> showUserAlbums(uiState.albums)
             }
         })
 
         albumViewModel.uiPhotosState.observe(viewLifecycleOwner, { uiState ->
             when (uiState) {
-                is UserAlbumViewModel.UserPhotosUiState.Error -> {
-                }
-                UserAlbumViewModel.UserPhotosUiState.Loading -> {
-                }
+                is UserAlbumViewModel.UserPhotosUiState.Error -> showError(uiState.exception)
+                UserAlbumViewModel.UserPhotosUiState.Loading -> showLoader()
                 is UserAlbumViewModel.UserPhotosUiState.Success -> showAlbumPhotos(uiState.photos)
             }
         })

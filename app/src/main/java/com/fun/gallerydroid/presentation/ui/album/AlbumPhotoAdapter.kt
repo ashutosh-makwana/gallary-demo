@@ -11,8 +11,8 @@ import com.`fun`.gallerydroid.common.load
 import com.`fun`.gallerydroid.databinding.ItemPhotoListBinding
 
 class AlbumPhotoAdapter :
-    ListAdapter<String, AlbumPhotoAdapter.PostListViewHolder>(PostComparator) {
-    override fun onBindViewHolder(holder: PostListViewHolder, position: Int) {
+    ListAdapter<String, AlbumPhotoAdapter.AlbumListViewHolder>(AlbumPhotoComparator) {
+    override fun onBindViewHolder(holder: AlbumListViewHolder, position: Int) {
         val imageUrl = getItem(position)
         imageUrl?.let { holder.bind(it) }
     }
@@ -20,13 +20,13 @@ class AlbumPhotoAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PostListViewHolder {
+    ): AlbumListViewHolder {
         val binding =
             ItemPhotoListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostListViewHolder(binding)
+        return AlbumListViewHolder(binding)
     }
 
-    inner class PostListViewHolder(private val binding: ItemPhotoListBinding) :
+    inner class AlbumListViewHolder(private val binding: ItemPhotoListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(photoUrl: String) {
             Log.e(Constants.TAG, "before loading $photoUrl")
@@ -35,13 +35,13 @@ class AlbumPhotoAdapter :
     }
 
     companion object {
-        private val PostComparator = object : DiffUtil.ItemCallback<String>() {
+        private val AlbumPhotoComparator = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-                return false
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
-                true
+                oldItem == newItem
         }
     }
 }

@@ -11,18 +11,22 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_album"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="4dp"
         app:cardCornerRadius="4dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_album_name"
@@ -42,7 +46,6 @@
                 android:id="@+id/rv_album_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constrainedHeight="true"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,9 +53,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_album_name"
                 app:spanCount="3"
-                tools:itemCount="9"
+                tools:itemCount="10"
                 tools:listitem="@layout/item_photo_list" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
